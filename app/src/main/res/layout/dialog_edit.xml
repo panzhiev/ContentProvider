@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_edit"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/edit_text_dialog_name"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/txt_et_name" />
+
+    <EditText
+        android:id="@+id/edit_text_dialog_surname"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_dialog_name"
+        android:hint="@string/txt_et_surname" />
+
+    <EditText
+        android:id="@+id/edit_text_dialog_phone_number"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_dialog_surname"
+        android:hint="@string/txt_et_phone" />
+
+    <EditText
+        android:id="@+id/edit_text_dialog_mail"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_dialog_phone_number"
+        android:hint="@string/txt_et_mail" />
+
+    <EditText
+        android:id="@+id/edit_text_dialog_skype"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_dialog_mail"
+        android:hint="@string/txt_et_skype" />
+
+</RelativeLayout>

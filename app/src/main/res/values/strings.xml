@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ContentProvider</string>
+    <string name="txt_et_phone">Put Phone</string>
+    <string name="txt_et_surname">Put Surname</string>
+    <string name="txt_et_name">Put Name</string>
+    <string name="txt_et_id">Put Id</string>
+    <string name="txt_et_mail">Put Mail</string>
+    <string name="txt_et_skype">Put Skype</string>
+    <string name="btn_save">btn_save</string>
+</resources>
