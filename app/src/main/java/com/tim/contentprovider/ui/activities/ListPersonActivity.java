@@ -20,7 +20,8 @@ import com.tim.contentprovider.ui.adapters.FilterAdapter;
 
 import java.util.ArrayList;
 
-import static com.tim.contentprovider.ui.MainActivity.encodeToBase64;
+import static com.tim.contentprovider.utils.Utility.encodeToBase64;
+
 
 public class ListPersonActivity extends AppCompatActivity {
 

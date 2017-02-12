@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,8 +19,7 @@ import com.tim.contentprovider.R;
 import com.tim.contentprovider.db.DBContentProvider;
 import com.tim.contentprovider.db.PersonContract;
 import com.tim.contentprovider.ui.activities.ListPersonActivity;
-
-import java.io.ByteArrayOutputStream;
+import com.tim.contentprovider.utils.Utility;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -67,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_save:
 
                 Bitmap bitmap = ((BitmapDrawable) ivPerson.getDrawable()).getBitmap();
-                String imageIncodedString = encodeToBase64(bitmap);
+                String imageIncodedString = Utility.encodeToBase64(bitmap);
 
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(PersonContract.KEY_NAME, etName.getText().toString());
@@ -153,16 +151,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         Intent intent = new Intent(MainActivity.this, ListPersonActivity.class);
         startActivity(intent);
-    }
-
-    public static String encodeToBase64(Bitmap image)
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-
-        Log.d("Image was encoded: ", imageEncoded);
-        return imageEncoded;
     }
 }

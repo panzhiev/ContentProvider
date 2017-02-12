@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -38,7 +39,7 @@ import com.tim.contentprovider.ui.activities.DetailsPersonsActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.tim.contentprovider.ui.activities.DetailsPersonsActivity.decodeBase64;
+import static com.tim.contentprovider.utils.Utility.decodeBase64;
 
 //import com.tim.contentprovider.db.CRUDSharedPreferences;
 
@@ -72,8 +73,8 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderPerson holder, int position) {
-        final Person person = (Person) personsList.get(position);
+    public void onBindViewHolder(ViewHolderPerson holder, final int position) {
+        final Person person = personsList.get(position);
         holder.cvPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +85,10 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
         holder.tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Person.selectedPerson = person;
+//                Person.selectedPerson = person;
+                int idPerson = personsList.get(position).getmId();
+                Bundle bundle = new Bundle();
+                bundle.putInt("IdPersonToDetailActivity", idPerson);
                 Intent intent = new Intent(mContext, DetailsPersonsActivity.class);
                 mContext.startActivity(intent);
             }
@@ -142,7 +146,6 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
             public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 getActivityFromContext(mContext).startActivityForResult(intent, 2);
-
 
 //                ivDialogPhoto.setImageBitmap(decodeBase64(newPhoto));
 //                personItem.setmProfile(newPhoto);
