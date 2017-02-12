@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnSave;
     private Button btnTakePhoto;
     private ImageView ivPerson;
+
     final String TAG = "MYLOGS";
     final int REQUEST_CODE_PHOTO = 1;
     private static int RESULT_LOAD_IMAGE = 1;

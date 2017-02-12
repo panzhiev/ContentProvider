@@ -143,7 +143,7 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 getActivityFromContext(mContext).startActivityForResult(intent, 2);
 
-                
+
 //                ivDialogPhoto.setImageBitmap(decodeBase64(newPhoto));
 //                personItem.setmProfile(newPhoto);
 //                notifyDataSetChanged();
