@@ -38,7 +38,7 @@ public class DetailsPersonsActivity extends AppCompatActivity
         ivProfile.setImageBitmap(decodeBase64(decodedPhoto));
     }
 
-    public  static Bitmap decodeBase64(String input)
+    public static Bitmap decodeBase64(String input)
     {
         byte[] decodeByte = Base64.decode(input, 0);
         return BitmapFactory.decodeByteArray(decodeByte, 0, decodeByte.length);

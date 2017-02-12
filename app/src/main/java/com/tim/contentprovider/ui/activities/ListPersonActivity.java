@@ -1,12 +1,15 @@
 package com.tim.contentprovider.ui.activities;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.tim.contentprovider.R;
@@ -17,12 +20,18 @@ import com.tim.contentprovider.ui.adapters.FilterAdapter;
 
 import java.util.ArrayList;
 
+import static com.tim.contentprovider.ui.MainActivity.encodeToBase64;
+
 public class ListPersonActivity extends AppCompatActivity {
 
     RecyclerView rvPerson;
     ArrayList<Person> listOfPersons;
     FilterAdapter adapter;
     private EditText tvSelect;
+    final String TAG = "MYLOGS";
+    final int REQUEST_CODE_PHOTO = 2;
+    private static int RESULT_LOAD_IMAGE = 2;
+    public static String newPhoto;
 
     //отработка метода при создании активности
     @Override
@@ -78,5 +87,36 @@ public class ListPersonActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && intent != null){
+            if (requestCode == REQUEST_CODE_PHOTO){
+                if(resultCode == RESULT_OK){
+                    if (intent == null)
+                    {
+                        Log.d(TAG, "Intent is null");
+                    } else {
+                        Log.d(TAG, "Photo uri: " + intent.getData());
+                        Bundle bndl = intent.getExtras();
+                        if(bndl != null){
+                            Object obj = intent.getExtras().get("data");
+                            if(obj instanceof Bitmap){
+                                Bitmap bitmap = (Bitmap) obj;
+                                Log.d(TAG, "bitmap" + bitmap.getWidth() + " x " + bitmap.getHeight());
+//                                ivPhotoEdit.setImageBitmap(bitmap);
+                                newPhoto = encodeToBase64(bitmap);
+                            }
+                        }
+                    }
+                }else if(resultCode == RESULT_CANCELED)
+                {
+                    Log.d(TAG, "Canceled");
+                }
+            }
+        }
     }
 }

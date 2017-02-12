@@ -23,6 +23,6 @@ public class ViewHolderPerson extends RecyclerView.ViewHolder {
         this.cvPerson = (CardView) itemView.findViewById(R.id.card_view_person);
         this.tvName = (TextView) itemView.findViewById(R.id.text_view_item_short_name);
         this.tvPhone = (TextView) itemView.findViewById(R.id.text_view_item_short_phone_number);
-        this.ibEdit = (ImageButton) itemView.findViewById(R.id.btn_short_edit);
+        this.ibEdit = (ImageButton) itemView.findViewById(R.id.ib_short_edit);
     }
 }

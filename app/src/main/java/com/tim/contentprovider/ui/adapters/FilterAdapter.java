@@ -1,17 +1,21 @@
 package com.tim.contentprovider.ui.adapters;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +24,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.tim.contentprovider.R;
@@ -31,6 +37,8 @@ import com.tim.contentprovider.ui.activities.DetailsPersonsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.tim.contentprovider.ui.activities.DetailsPersonsActivity.decodeBase64;
 
 //import com.tim.contentprovider.db.CRUDSharedPreferences;
 
@@ -100,6 +108,17 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
         });
     }
 
+    public static AppCompatActivity getActivityFromContext(Context context) {
+        if (context instanceof Activity) {
+            return (AppCompatActivity) context;
+        }
+        if (context instanceof ContextWrapper &&
+                ((ContextWrapper) context).getBaseContext() instanceof Activity) {
+            return (AppCompatActivity) ((ContextWrapper) context).getBaseContext();
+        }
+        return null;
+    }
+
     @Override
     public int getItemCount() {
         return personsList.size();
@@ -115,6 +134,24 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
         final EditText etDialogPhone = (EditText) root.findViewById(R.id.edit_text_dialog_phone_number);
         final EditText etDialogMail = (EditText) root.findViewById(R.id.edit_text_dialog_mail);
         final EditText etDialogSkype = (EditText) root.findViewById(R.id.edit_text_dialog_skype);
+        final ImageView ibPhotoEdit = (ImageButton) root.findViewById(R.id.ib_photo_edit);
+        final ImageView ivDialogPhoto = (ImageView) root.findViewById(R.id.image_view_main_profile_in_dialog);
+
+        ibPhotoEdit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                getActivityFromContext(mContext).startActivityForResult(intent, 2);
+
+                
+//                ivDialogPhoto.setImageBitmap(decodeBase64(newPhoto));
+//                personItem.setmProfile(newPhoto);
+//                notifyDataSetChanged();
+            }
+        });
+
+        String decodedPhoto = personItem.getmProfile();
+        ivDialogPhoto.setImageBitmap(decodeBase64(decodedPhoto));
 
 //        etDialogId.setText(String.valueOf(personItem.getmId()));
         etDialogName.setText(personItem.getmName());
@@ -127,11 +164,9 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
         alertDialogBuilder.setView(root);
         alertDialogBuilder.setMessage("Edit Contact");
 
-
         alertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                personItem.setmId(Integer.parseInt(etDialogId.getText().toString()));
                 personItem.setmName(etDialogName.getText().toString());
                 personItem.setmSurname(etDialogSurname.getText().toString());
                 personItem.setmPhone(etDialogPhone.getText().toString());
