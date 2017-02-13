@@ -38,7 +38,7 @@ public class DatabaseTasks extends AsyncTask<Object, Void, Void> {
                 break;
             case DELETE_BY_ID:
                 values = (ContentValues) params[1];
-                contentResolver.delete(DBContentProvider.PERSONS_CONTENT_URI, PersonContract.KEY_NAME + " =? ", new String[]{values.getAsString(PersonContract.KEY_NAME)});
+                contentResolver.delete(DBContentProvider.PERSONS_CONTENT_URI, PersonContract.KEY_NAME + " = ? ", new String[]{values.getAsString(PersonContract.KEY_NAME)});
                 break;
             case UPDATE:
                 id = (Integer) params[0];
@@ -58,7 +58,6 @@ public class DatabaseTasks extends AsyncTask<Object, Void, Void> {
             default:
                 break;
         }
-
         return null;
     }
 }

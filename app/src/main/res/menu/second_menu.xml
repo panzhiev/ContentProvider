@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.tim.crudsqlite.ui.activities.ListPersonActivity">
+
+    <item
+        android:id="@+id/action_selection_by_id"
+        android:orderInCategory="100"
+        android:title="Select Person by ID"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_delete_all_persons"
+        android:orderInCategory="100"
+        android:title="Delete All Persons"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_close_list_person"
+        android:orderInCategory="100"
+        android:title="Close List of Persons"
+        app:showAsAction="never" />
+</menu>

@@ -27,6 +27,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tim.contentprovider.R;
@@ -132,7 +133,7 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
         LayoutInflater dialogInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View root = dialogInflater.inflate(R.layout.dialog_edit, null);
 
-//        final EditText etDialogId = (EditText) root.findViewById(R.id.edit_text_dialog_id);
+        final TextView etDialogId = (TextView) root.findViewById(R.id.tv_text_dialog_id);
         final EditText etDialogName = (EditText) root.findViewById(R.id.edit_text_dialog_name);
         final EditText etDialogSurname = (EditText) root.findViewById(R.id.edit_text_dialog_surname);
         final EditText etDialogPhone = (EditText) root.findViewById(R.id.edit_text_dialog_phone_number);
@@ -156,7 +157,7 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
         String decodedPhoto = personItem.getmProfile();
         ivDialogPhoto.setImageBitmap(decodeBase64(decodedPhoto));
 
-//        etDialogId.setText(String.valueOf(personItem.getmId()));
+        etDialogId.setText(String.valueOf(personItem.getmId()));
         etDialogName.setText(personItem.getmName());
         etDialogSurname.setText(personItem.getmSurname());
         etDialogPhone.setText(personItem.getmPhone());

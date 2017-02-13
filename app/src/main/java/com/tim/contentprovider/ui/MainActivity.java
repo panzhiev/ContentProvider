@@ -16,9 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.tim.contentprovider.R;
-import com.tim.contentprovider.db.DBContentProvider;
 import com.tim.contentprovider.db.PersonContract;
 import com.tim.contentprovider.ui.activities.ListPersonActivity;
+import com.tim.contentprovider.utils.DatabaseTasks;
 import com.tim.contentprovider.utils.Utility;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -74,7 +74,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 contentValues.put(PersonContract.KEY_MAIL, etMail.getText().toString());
                 contentValues.put(PersonContract.KEY_SKYPE, etSkype.getText().toString());
                 contentValues.put(PersonContract.KEY_PROFILE, imageIncodedString);
-                getContentResolver().insert(DBContentProvider.PERSONS_CONTENT_URI, contentValues);
+//                getContentResolver().insert(DBContentProvider.PERSONS_CONTENT_URI, contentValues);
+                DatabaseTasks databaseTasks = new DatabaseTasks(this);
+                databaseTasks.execute(DatabaseTasks.INSERT, contentValues);
                 followToListPersons();
                 clear();
                 break;
