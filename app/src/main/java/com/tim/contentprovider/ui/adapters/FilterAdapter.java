@@ -54,6 +54,7 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
     private List<Person> personsList;
     private List<Person> origPersonList;
     private Filter personFilter;
+    public  String TAG = "MY_LOG_ADAPTER";
 
     public FilterAdapter(Context mContext, ArrayList<Person> personsList) {
         super();
@@ -90,6 +91,7 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
                 int idPerson = personsList.get(position).getmId();
                 Bundle bundle = new Bundle();
                 bundle.putInt("IdPersonToDetailActivity", idPerson);
+                Log.d(TAG, "idPerson = " + idPerson);
                 Intent intent = new Intent(mContext, DetailsPersonsActivity.class);
                 mContext.startActivity(intent);
             }
@@ -131,16 +133,16 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
 
     private void openEditDialog(final Person personItem) {
         LayoutInflater dialogInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View root = dialogInflater.inflate(R.layout.dialog_edit, null);
+        final View view = dialogInflater.inflate(R.layout.dialog_edit, null);
 
-        final TextView etDialogId = (TextView) root.findViewById(R.id.tv_text_dialog_id);
-        final EditText etDialogName = (EditText) root.findViewById(R.id.edit_text_dialog_name);
-        final EditText etDialogSurname = (EditText) root.findViewById(R.id.edit_text_dialog_surname);
-        final EditText etDialogPhone = (EditText) root.findViewById(R.id.edit_text_dialog_phone_number);
-        final EditText etDialogMail = (EditText) root.findViewById(R.id.edit_text_dialog_mail);
-        final EditText etDialogSkype = (EditText) root.findViewById(R.id.edit_text_dialog_skype);
-        final ImageView ibPhotoEdit = (ImageButton) root.findViewById(R.id.ib_photo_edit);
-        final ImageView ivDialogPhoto = (ImageView) root.findViewById(R.id.image_view_main_profile_in_dialog);
+        final TextView etDialogId = (TextView) view.findViewById(R.id.tv_text_dialog_id);
+        final EditText etDialogName = (EditText) view.findViewById(R.id.edit_text_dialog_name);
+        final EditText etDialogSurname = (EditText) view.findViewById(R.id.edit_text_dialog_surname);
+        final EditText etDialogPhone = (EditText) view.findViewById(R.id.edit_text_dialog_phone_number);
+        final EditText etDialogMail = (EditText) view.findViewById(R.id.edit_text_dialog_mail);
+        final EditText etDialogSkype = (EditText) view.findViewById(R.id.edit_text_dialog_skype);
+        final ImageView ibPhotoEdit = (ImageButton) view.findViewById(R.id.ib_photo_edit);
+        final ImageView ivDialogPhoto = (ImageView) view.findViewById(R.id.image_view_main_profile_in_dialog);
 
         ibPhotoEdit.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -148,9 +150,15 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 getActivityFromContext(mContext).startActivityForResult(intent, 2);
 
-//                ivDialogPhoto.setImageBitmap(decodeBase64(newPhoto));
-//                personItem.setmProfile(newPhoto);
-//                notifyDataSetChanged();
+//                if (newPhoto == null)
+//                {
+//                    Toast.makeText(mContext, "newPhoto = null", Toast.LENGTH_SHORT).show();
+//                }else
+//                {
+//                    ivDialogPhoto.setImageBitmap(decodeBase64(newPhoto));
+//                    personItem.setmProfile(newPhoto);
+//                    notifyDataSetChanged();
+//                }
             }
         });
 
@@ -165,7 +173,7 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
         etDialogSkype.setText(personItem.getmSkype());
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-        alertDialogBuilder.setView(root);
+        alertDialogBuilder.setView(view);
         alertDialogBuilder.setMessage("Edit Contact");
 
         alertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {

@@ -55,11 +55,14 @@
                     android:hint="@string/txt_et_skype"
                     android:layout_below="@id/et_mail"
                     android:layout_margin="2dp"/>
+
                 <ImageView
                     android:id="@+id/image_view_main_profile"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_below="@+id/et_skype"/>
+                    android:layout_below="@+id/et_skype"
+                    android:layout_alignLeft="@+id/et_skype"
+                    android:layout_alignStart="@+id/et_skype"/>
             </RelativeLayout>
             <FrameLayout
                 android:id="@+id/fl"

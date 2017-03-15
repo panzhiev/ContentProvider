@@ -123,6 +123,7 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
                                 Log.d(TAG, "bitmap" + bitmap.getWidth() + " x " + bitmap.getHeight());
 //                                ivPhotoEdit.setImageBitmap(bitmap);
                                 newPhoto = encodeToBase64(bitmap);
+
                             }
                         }
                     }
@@ -216,7 +217,7 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
         String sortOrder = null;
 
         if (bundle != null) {
-            selection = "SelectPersonById" + bundle.getInt("SelectPersonById");
+            selection = "SelectPersonById = " + bundle.getInt("SelectPersonById");
         }
 
         CursorLoader loader = new CursorLoader(this, DBContentProvider.PERSONS_CONTENT_URI, null, selection, null, sortOrder);

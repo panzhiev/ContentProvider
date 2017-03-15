@@ -110,8 +110,10 @@ public class DBContentProvider extends ContentProvider{
             tableName = Config.TABLE_PERSON;
             resultUri = PERSONS_CONTENT_URI;
         }
-        else
+        else {
             throw new IllegalArgumentException("Wrong URI: " + uri);
+        }
+
         db = dbHelper.getWritableDatabase();
         String nullColumn = "";
         long rowID = db.insert(tableName, nullColumn, values);

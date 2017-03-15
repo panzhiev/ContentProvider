@@ -41,14 +41,14 @@ public class DatabaseTasks extends AsyncTask<Object, Void, Void> {
                 contentResolver.delete(DBContentProvider.PERSONS_CONTENT_URI, PersonContract.KEY_NAME + " = ? ", new String[]{values.getAsString(PersonContract.KEY_NAME)});
                 break;
             case UPDATE:
-                id = (Integer) params[0];
-                values = (ContentValues) params[1];
+                id = (Integer) params[1];
+                values = (ContentValues) params[2];
                 contentResolver.update(DBContentProvider.PERSONS_CONTENT_URI.buildUpon().
                         appendPath(String.valueOf(id)).build(), values, null, null);
                 contentResolver.notifyChange(DBContentProvider.PERSONS_CONTENT_URI, null);
                 break;
             case QUERY_BY_ID:
-                id = (Integer) params[0];
+                id = (Integer) params[1];
                 contentResolver.query(DBContentProvider.PERSONS_CONTENT_URI.buildUpon().
                         appendPath(String.valueOf(id)).build(), null, null, null, null);
                 break;

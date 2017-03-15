@@ -6,6 +6,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
 {
     TextView tvName, tvSurname, tvPhone, tvMail, tvSkype;
     ImageView ivProfile;
+    public  String TAG = "MY_LOG_DetailsPersonsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +60,15 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
 
         if (bundle != null)
         {
-            selection = "IdPersonToDetailActivity" + bundle.getInt("IdPersonToDetailActivity");
+            int idPerson = bundle.getInt("IdPersonToDetailActivity");
+            selection = "IdPersonToDetailActivity = " + idPerson;
+            Log.d(TAG, "idPerson = " + idPerson);
+        } else {
+            Log.d(TAG, "bundle == null");
         }
 
         CursorLoader loader = new CursorLoader(this, DBContentProvider.PERSONS_CONTENT_URI, null, selection, null, sortOrder);
+
         return loader;
     }
 
@@ -69,7 +76,7 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         while (cursor.moveToNext())
         {
-            tvName.setText(cursor.getInt(cursor.getColumnIndex(PersonContract.KEY_NAME)));
+            tvName.setText(cursor.getString(cursor.getColumnIndex(PersonContract.KEY_NAME)));
             tvSurname.setText(cursor.getString(cursor.getColumnIndex(PersonContract.KEY_SURNAME)));
             tvPhone.setText(cursor.getString(cursor.getColumnIndex(PersonContract.KEY_PHONE)));
             tvMail.setText(cursor.getString(cursor.getColumnIndex(PersonContract.KEY_MAIL)));
