@@ -6,48 +6,85 @@
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="16dp"
     tools:context="com.tim.contentprovider.ui.activities.DetailsPersonsActivity">
 
-    <TextView
-        android:id="@+id/text_view_details_name"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name"
-        android:layout_margin="1dp"/>
-    <TextView
-        android:id="@+id/text_view_details_surname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Surname"
-        android:layout_below="@id/text_view_details_name"
-        android:layout_margin="1dp"/>
-    <TextView
-        android:id="@+id/text_view_details_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Phone"
-        android:layout_alignParentRight="true"
-        android:layout_margin="1dp"/>
-    <TextView
-        android:id="@+id/text_view_details_mail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mail"
-        android:layout_below="@id/text_view_details_phone"
-        android:layout_alignParentRight="true"
-        android:layout_margin="1dp"/>
-    <TextView
-        android:id="@+id/text_view_details_skype"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Skype"
-        android:layout_below="@id/text_view_details_mail"
-        android:layout_margin="1dp"
-        android:layout_alignParentRight="true" />
-    <ImageView
-        android:id="@+id/image_view_main_profile"
+        android:id="@+id/RL_profile_photo_with_edit_button"
+        android:paddingTop="20dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/image_view_main_profile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_launcher"
+            app:civ_border_color="#c7c7c7"
+            app:civ_border_width="2dp" />
+
+        <ImageButton
+            android:id="@+id/ib_photo_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_add_a_photo_black_24dp"
+            android:layout_alignRight="@id/image_view_main_profile"
+            android:layout_alignBottom="@id/image_view_main_profile"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/RL_details_person"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/text_view_details_skype"/>
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/RL_profile_photo_with_edit_button"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/text_view_details_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/text_view_details_surname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_view_details_name"
+            android:layout_margin="1dp"
+            android:text="Surname" />
+
+        <TextView
+            android:id="@+id/text_view_details_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_view_details_surname"
+            android:layout_margin="1dp"
+            android:text="Phone" />
+
+        <TextView
+            android:id="@+id/text_view_details_mail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_view_details_phone"
+            android:layout_margin="1dp"
+            android:text="Mail" />
+
+        <TextView
+            android:id="@+id/text_view_details_skype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_view_details_mail"
+            android:layout_margin="1dp"
+            android:text="Skype"/>
+        <ImageButton
+            android:id="@+id/ib_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_create_black_24dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
 </RelativeLayout>

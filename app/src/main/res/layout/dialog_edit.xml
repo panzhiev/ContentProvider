@@ -4,10 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <TextView
         android:id="@+id/tv_text_dialog_id"
-        android:layout_width="250dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <EditText
         android:id="@+id/edit_text_dialog_name"
@@ -15,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_text_dialog_id"
         android:hint="@string/txt_et_name" />
-
     <EditText
         android:id="@+id/edit_text_dialog_surname"
         android:layout_width="250dp"
@@ -41,16 +39,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_text_dialog_mail"
         android:hint="@string/txt_et_skype" />
-    <ImageButton
-        android:id="@+id/ib_photo_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/ic_add_a_photo_black_24dp"
-        android:layout_alignParentRight="true" />
-    <ImageView
-        android:id="@+id/image_view_main_profile_in_dialog"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/edit_text_dialog_skype"/>
 
 </RelativeLayout>
