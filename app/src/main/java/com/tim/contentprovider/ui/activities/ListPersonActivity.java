@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +44,7 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
     final int REQUEST_CODE_PHOTO = 2;
     private static int RESULT_LOAD_IMAGE = 2;
     public static String newPhoto;
+
 
     //отработка метода при создании активности
     @Override
@@ -144,11 +146,10 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_selection_by_id:
-                getPersonId();
+                getPersonById();
                 break;
             case R.id.action_delete_all_persons:
-                getContentResolver().delete(DBContentProvider.PERSONS_CONTENT_URI, null, null);
-//                adapter.dropAllPesons();
+                deleteAllPersons();
                 break;
             case R.id.action_close_list_person:
                 finish();
@@ -157,7 +158,20 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
         return super.onOptionsItemSelected(item);
     }
 
-    private void getPersonId() {
+    private void deleteAllPersons() {
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+
+                getContentResolver().delete(DBContentProvider.PERSONS_CONTENT_URI, null, null);
+                return null;
+            }
+        }.execute();
+    }
+
+    private void getPersonById() {
         final LayoutInflater getPersonDialogInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View viewPerson = getPersonDialogInflater.inflate(R.layout.dialog_selection_by_id, null);
 
@@ -173,7 +187,6 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
                 int idPerson = Integer.parseInt(etSelectPersonById.getText().toString());
                 Bundle bundle = new Bundle();
                 bundle.putInt("SelectPersonById", idPerson);
-
 //                Cursor cursor = getContentResolver().query(DBContentProvider.PERSONS_CONTENT_URI, null, null, null, null);
 //                if (cursor.moveToFirst()) {
 //                    do {
@@ -204,11 +217,6 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
         builder.show();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getLoaderManager().restartLoader(0, null, this);
-    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
@@ -217,7 +225,11 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
         String sortOrder = null;
 
         if (bundle != null) {
-            selection = "SelectPersonById = " + bundle.getInt("SelectPersonById");
+            selection = "ID = " + bundle.getInt("SelectPersonById");
+            Log.d(TAG, "bundle == null;" + "ID = " + bundle.getInt("SelectPersonById"));
+        }else
+        {
+            Log.d(TAG, "bundle == null");
         }
 
         CursorLoader loader = new CursorLoader(this, DBContentProvider.PERSONS_CONTENT_URI, null, selection, null, sortOrder);

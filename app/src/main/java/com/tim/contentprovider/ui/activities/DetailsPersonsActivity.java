@@ -179,7 +179,6 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
                 contentValues.put(PersonContract.KEY_PHONE, etDialogPhone.getText().toString());
                 contentValues.put(PersonContract.KEY_MAIL, etDialogMail.getText().toString());
                 contentValues.put(PersonContract.KEY_SKYPE, etDialogSkype.getText().toString());
-
                 updateDB(contentValues);
 
             }
@@ -197,12 +196,10 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
 
     public void updatePhoto (final Bitmap bitmap) {
 
-        new AsyncTask<Bitmap, Void, Void>() {
+        new AsyncTask<Void, Void, Void>() {
 
             @Override
-            protected Void doInBackground(Bitmap... params) {
-
-                Bitmap bitmap = params[0];
+            protected Void doInBackground(Void... params) {
 
                 String imageIncodedString = Utility.encodeToBase64(bitmap);
                 ContentValues contentValues = new ContentValues();
@@ -211,7 +208,7 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
 
                 return null;
             }
-        }.execute(bitmap);
+        }.execute();
     }
 
     public void updateDB (final ContentValues contentValues) {
