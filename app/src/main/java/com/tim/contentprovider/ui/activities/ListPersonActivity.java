@@ -187,6 +187,7 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
                 int idPerson = Integer.parseInt(etSelectPersonById.getText().toString());
                 Bundle bundle = new Bundle();
                 bundle.putInt("SelectPersonById", idPerson);
+                getLoaderManager().restartLoader(0, bundle, ListPersonActivity.this);
 //                Cursor cursor = getContentResolver().query(DBContentProvider.PERSONS_CONTENT_URI, null, null, null, null);
 //                if (cursor.moveToFirst()) {
 //                    do {
