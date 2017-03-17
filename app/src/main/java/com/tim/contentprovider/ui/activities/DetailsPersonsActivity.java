@@ -11,6 +11,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -136,11 +137,7 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
                         if (obj instanceof Bitmap) {
                             Bitmap bitmap = (Bitmap) obj;
                             Log.d(TAG, "bitmap" + bitmap.getWidth() + " x " + bitmap.getHeight());
-
-                            String imageIncodedString = Utility.encodeToBase64(bitmap);
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put(PersonContract.KEY_PROFILE, imageIncodedString);
-                            getContentResolver().update(Uri.parse(DBContentProvider.PERSONS_CONTENT_URI + "/" + idPerson), contentValues, null, null);
+                            updatePhoto(bitmap);
                         }
                     }
                 }
@@ -182,7 +179,9 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
                 contentValues.put(PersonContract.KEY_PHONE, etDialogPhone.getText().toString());
                 contentValues.put(PersonContract.KEY_MAIL, etDialogMail.getText().toString());
                 contentValues.put(PersonContract.KEY_SKYPE, etDialogSkype.getText().toString());
-                getContentResolver().update(Uri.parse(DBContentProvider.PERSONS_CONTENT_URI + "/" + person.getmId()), contentValues, null, null);
+
+                updateDB(contentValues);
+
             }
         });
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -194,5 +193,37 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
         alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.create();
         alertDialogBuilder.show();
+    }
+
+    public void updatePhoto (final Bitmap bitmap) {
+
+        new AsyncTask<Bitmap, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Bitmap... params) {
+
+                Bitmap bitmap = params[0];
+
+                String imageIncodedString = Utility.encodeToBase64(bitmap);
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(PersonContract.KEY_PROFILE, imageIncodedString);
+                getContentResolver().update(Uri.parse(DBContentProvider.PERSONS_CONTENT_URI + "/" + idPerson), contentValues, null, null);
+
+                return null;
+            }
+        }.execute(bitmap);
+    }
+
+    public void updateDB (final ContentValues contentValues) {
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+
+                getContentResolver().update(Uri.parse(DBContentProvider.PERSONS_CONTENT_URI + "/" + person.getmId()), contentValues, null, null);
+                return null;
+            }
+        }.execute();
     }
 }
