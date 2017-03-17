@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.tim.contentprovider.R;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText etMail;
     private EditText etSkype;
     private Button btnSave;
-    private Button btnTakePhoto;
+    private ImageButton btnTakePhoto;
     private ImageView ivPerson;
 
     final String TAG = "MYLOGS";
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         etMail = (EditText) findViewById(R.id.et_mail);
         etSkype = (EditText) findViewById(R.id.et_skype);
         btnSave = (Button) findViewById(R.id.btn_save);
-        btnTakePhoto = (Button) findViewById(R.id.btn_take_photo);
+        btnTakePhoto = (ImageButton) findViewById(R.id.btn_take_photo);
         ivPerson = (ImageView) findViewById(R.id.image_view_main_profile);
         btnSave.setOnClickListener(this);
         btnTakePhoto.setOnClickListener(this);
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                databaseTasks.execute(DatabaseTasks.INSERT, contentValues);
                 followToListPersons();
                 clear();
+                setContentView(R.layout.activity_main);
                 break;
             case R.id.btn_take_photo:
                 try{

@@ -9,15 +9,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.ListPersonActivity"/>
-        <activity android:name=".ui.activities.DetailsPersonsActivity"/>
+        <activity android:name=".ui.activities.ListPersonActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activities.DetailsPersonsActivity"
+            android:screenOrientation="portrait" />
         <provider
             android:authorities="com.tim.contentprovider"
             android:name="com.tim.contentprovider.db.DBContentProvider"/>
