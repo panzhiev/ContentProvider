@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                databaseTasks.execute(DatabaseTasks.INSERT, contentValues);
                 followToListPersons();
                 clear();
-                setContentView(R.layout.activity_main);
                 break;
             case R.id.btn_take_photo:
                 try{
@@ -149,11 +148,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         etPhone.setText("");
         etMail.setText("");
         etSkype.setText("");
-        ivPerson.setImageBitmap(null);
+        ivPerson.setImageResource(R.mipmap.profile_placeholder);
     }
     private void followToListPersons()
     {
         Intent intent = new Intent(MainActivity.this, ListPersonActivity.class);
         startActivity(intent);
     }
+
 }

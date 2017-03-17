@@ -11,6 +11,7 @@ import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +30,7 @@ import com.tim.contentprovider.db.DBContentProvider;
 import com.tim.contentprovider.model.Person;
 import com.tim.contentprovider.ui.MainActivity;
 import com.tim.contentprovider.ui.activities.DetailsPersonsActivity;
+import com.tim.contentprovider.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +74,14 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
             @Override
             public void onClick(View v) {
                 Log.d("Card", "onClick");
+                int idPerson = person.getmId();
+                Bundle bundle = new Bundle();
+                bundle.putInt("IdPersonToDetailActivity", idPerson);
+                Intent intent = new Intent(mContext, DetailsPersonsActivity.class);
+                intent.putExtras(bundle);
+//                Person.selectedPerson = person;
+                Log.d(TAG, "idPerson = " + idPerson);
+                mContext.startActivity(intent);
             }
         });
         holder.tvName.setText(person.getmName());
@@ -99,6 +109,8 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
                 mContext.startActivity(intent);
             }
         });
+        Bitmap bitmap = Utility.decodeBase64(person.getmProfile());
+        holder.civProfile.setImageBitmap(bitmap);
     }
 
     public static AppCompatActivity getActivityFromContext(Context context) {
