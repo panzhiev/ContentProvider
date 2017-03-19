@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -27,26 +25,37 @@ import com.tim.contentprovider.R;
 import com.tim.contentprovider.db.DBContentProvider;
 import com.tim.contentprovider.db.PersonContract;
 import com.tim.contentprovider.model.Person;
+import com.tim.contentprovider.utils.DatabaseTasks;
 import com.tim.contentprovider.utils.Utility;
 
 /**
  * Created by Tim on 21.01.2017.
  */
 public class DetailsPersonsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    TextView tvName, tvSurname, tvPhone, tvMail, tvSkype;
-    ImageView ivProfile;
-    public ImageButton ibPhotoEdit;
-    public ImageButton ibEdit;
+
+    private TextView tvName, tvSurname, tvPhone, tvMail, tvSkype;
+    private ImageView ivProfile;
+    private ImageButton ibPhotoEdit;
+    private ImageButton ibEdit;
     public String TAG = "MY_LOG_DetailsPersonsActivity";
     final int REQUEST_CODE_PHOTO = 2;
     public int idPerson;
     public Person person;
+    private DatabaseTasks dbt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent intent = this.getIntent();
+        Bundle bundle = intent.getExtras();
+        idPerson = bundle.getInt("IdPersonToDetailActivity");
+        getLoaderManager().initLoader(0, bundle, this);
+
+        dbt = new DatabaseTasks(DetailsPersonsActivity.this);
+
         person = new Person();
+
         setContentView(R.layout.activity_person_details);
         ibEdit = (ImageButton) findViewById(R.id.ib_edit);
         ibEdit.setOnClickListener(new View.OnClickListener() {
@@ -63,11 +72,6 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
                 startActivityForResult(intent, REQUEST_CODE_PHOTO);
             }
         });
-
-        Intent intent = this.getIntent();
-        Bundle bundle = intent.getExtras();
-        idPerson = bundle.getInt("IdPersonToDetailActivity");
-        getLoaderManager().initLoader(0, bundle, this);
 
         tvName = (TextView) findViewById(R.id.text_view_details_name);
         tvSurname = (TextView) findViewById(R.id.text_view_details_surname);
@@ -98,6 +102,7 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         while (cursor.moveToNext()) {
+
             //достаем из БД данные, заполняем TextView в DetailsPersonsActivity;
             tvName.setText("Name: " + cursor.getString(cursor.getColumnIndex(PersonContract.KEY_NAME)));
             tvSurname.setText("Surname: " + cursor.getString(cursor.getColumnIndex(PersonContract.KEY_SURNAME)));
@@ -106,7 +111,7 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
             tvSkype.setText("Skype: " + cursor.getString(cursor.getColumnIndex(PersonContract.KEY_SKYPE)));
             ivProfile.setImageBitmap(Utility.decodeBase64(cursor.getString(cursor.getColumnIndex(PersonContract.KEY_PROFILE))));
 
-            //достаем из БД данные, заполняем EditText в Dialog;
+            //достаем из БД данные, заполняем поля персоны;
             person.setmId(cursor.getInt(cursor.getColumnIndex(PersonContract.KEY_ID)));
             person.setmName(cursor.getString(cursor.getColumnIndex(PersonContract.KEY_NAME)));
             person.setmSurname(cursor.getString(cursor.getColumnIndex(PersonContract.KEY_SURNAME)));
@@ -137,7 +142,12 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
                         if (obj instanceof Bitmap) {
                             Bitmap bitmap = (Bitmap) obj;
                             Log.d(TAG, "bitmap" + bitmap.getWidth() + " x " + bitmap.getHeight());
-                            updatePhoto(bitmap);
+
+                            String imageIncodedString = Utility.encodeToBase64(bitmap);
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(PersonContract.KEY_PROFILE, imageIncodedString);
+
+                            dbt.execute(DatabaseTasks.UPDATE, idPerson, contentValues);
                         }
                     }
                 }
@@ -179,8 +189,7 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
                 contentValues.put(PersonContract.KEY_PHONE, etDialogPhone.getText().toString());
                 contentValues.put(PersonContract.KEY_MAIL, etDialogMail.getText().toString());
                 contentValues.put(PersonContract.KEY_SKYPE, etDialogSkype.getText().toString());
-                updateDB(contentValues);
-
+                dbt.execute(DatabaseTasks.UPDATE, person.getmId(), contentValues);
             }
         });
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -192,35 +201,5 @@ public class DetailsPersonsActivity extends AppCompatActivity implements LoaderM
         alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.create();
         alertDialogBuilder.show();
-    }
-
-    public void updatePhoto (final Bitmap bitmap) {
-
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-
-                String imageIncodedString = Utility.encodeToBase64(bitmap);
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(PersonContract.KEY_PROFILE, imageIncodedString);
-                getContentResolver().update(Uri.parse(DBContentProvider.PERSONS_CONTENT_URI + "/" + idPerson), contentValues, null, null);
-
-                return null;
-            }
-        }.execute();
-    }
-
-    public void updateDB (final ContentValues contentValues) {
-
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-
-                getContentResolver().update(Uri.parse(DBContentProvider.PERSONS_CONTENT_URI + "/" + person.getmId()), contentValues, null, null);
-                return null;
-            }
-        }.execute();
     }
 }

@@ -69,7 +69,9 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
 
     @Override
     public void onBindViewHolder(ViewHolderPerson holder, final int position) {
+
         final Person person = personsList.get(position);
+
         holder.cvPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +111,7 @@ public class FilterAdapter extends RecyclerView.Adapter<ViewHolderPerson> implem
                 mContext.startActivity(intent);
             }
         });
+
         Bitmap bitmap = Utility.decodeBase64(person.getmProfile());
         holder.civProfile.setImageBitmap(bitmap);
     }

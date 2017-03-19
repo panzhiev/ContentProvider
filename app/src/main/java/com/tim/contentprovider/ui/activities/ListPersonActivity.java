@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +27,7 @@ import com.tim.contentprovider.db.DBContentProvider;
 import com.tim.contentprovider.db.PersonContract;
 import com.tim.contentprovider.model.Person;
 import com.tim.contentprovider.ui.adapters.FilterAdapter;
+import com.tim.contentprovider.utils.DatabaseTasks;
 
 import java.util.ArrayList;
 
@@ -45,7 +45,6 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
     private static int RESULT_LOAD_IMAGE = 2;
     public static String newPhoto;
 
-
     //отработка метода при создании активности
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,22 +61,11 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rvPerson.setLayoutManager(llm);
 
-        String selection = null;
-        String sortOrder = null;
+        /*Раньше в этом месте был пункт
+        * формированиия курсора и инициализации списка персон
+        * Сейчас он в лоадере ниже*/
 
-        Cursor cursor = getContentResolver().query(DBContentProvider.PERSONS_CONTENT_URI, null, selection, null, sortOrder);
-
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(PersonContract.KEY_ID));
-            String name = cursor.getString(cursor.getColumnIndex(PersonContract.KEY_NAME));
-            String surname = cursor.getString(cursor.getColumnIndex(PersonContract.KEY_SURNAME));
-            String phone = cursor.getString(cursor.getColumnIndex(PersonContract.KEY_PHONE));
-            String mail = cursor.getString(cursor.getColumnIndex(PersonContract.KEY_MAIL));
-            String skype = cursor.getString(cursor.getColumnIndex(PersonContract.KEY_SKYPE));
-            String profile = cursor.getString(cursor.getColumnIndex(PersonContract.KEY_PROFILE));
-            listOfPersons.add(new Person(id, name, surname, phone, mail, skype, profile));
-        }
-        //инициализация adapter, передаем в конструктор текущий контекст и список персон
+        //инициализация adapter, передаем в конструктор текущий контекст и список персон (который уже сформирован в лоадере ниже)
         adapter = new FilterAdapter(this, listOfPersons);
         //кладем адаптер в rvPerson
         rvPerson.setAdapter(adapter);
@@ -160,15 +148,8 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
 
     private void deleteAllPersons() {
 
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-
-                getContentResolver().delete(DBContentProvider.PERSONS_CONTENT_URI, null, null);
-                return null;
-            }
-        }.execute();
+        DatabaseTasks dbt = new DatabaseTasks(ListPersonActivity.this);
+        dbt.execute(DatabaseTasks.DELETE);
     }
 
     private void getPersonById() {
@@ -252,7 +233,10 @@ public class ListPersonActivity extends AppCompatActivity implements LoaderManag
             String profile = cursor.getString(cursor.getColumnIndex(PersonContract.KEY_PROFILE));
             listOfPersons.add(new Person(id, name, surname, phone, mail, skype, profile));
         }
-        adapter.notifyDataSetChanged();
+        if (adapter != null)
+        {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
